@@ -2,13 +2,15 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
+require("dotenv").config();
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 const heroesRouter = require("./routes/heroesRouter");
 
 var app = express();
+const mongodConnect = process.env.DB_CONNECTION;
 mongoose.connect("mongodb://localhost/heroes", { useNewUrlParser: true, useUnifiedTopology: true });
 
 app.use(logger("dev"));

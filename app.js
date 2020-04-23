@@ -11,7 +11,7 @@ const heroesRouter = require("./routes/heroesRouter");
 
 var app = express();
 const mongodConnect = process.env.DB_CONNECTION;
-mongoose.connect("mongodb://localhost/heroes", { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(mongodConnect, { useNewUrlParser: true, useUnifiedTopology: true });
 
 app.use(logger("dev"));
 app.use(express.json());

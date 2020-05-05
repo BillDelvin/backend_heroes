@@ -7,6 +7,7 @@ const mongoose = require("mongoose")
 require("dotenv").config()
 const jwt = require("jsonwebtoken")
 const privateKey = "privateKey"
+const cors = require("cors")
 
 var indexRouter = require("./routes/index")
 const heroesRouter = require("./routes/heroesRouter")
@@ -16,6 +17,7 @@ var app = express()
 const mongodConnect = process.env.DB_LOCAL
 mongoose.connect(mongodConnect, { useNewUrlParser: true, useUnifiedTopology: true })
 
+app.use(cors())
 app.use(logger("dev"))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -26,17 +28,22 @@ app.use(express.static(path.join(__dirname, "public")))
 
 app.use("/", indexRouter)
 app.use("/user", userRouter)
+
+
 app.use("/heroes", validateUser, heroesRouter)
 
+
+// Middleware
 function validateUser(req, res, next) {
   const token = req.headers["authorization"]
   jwt.verify(token, privateKey, (err, decoded) => {
     console.log(req.headers)
     if (err) {
-      res.json(err)
+      res.status(400).json(err)
+      // res.json(err)
       console.log(err)
     } else {
-      req.body.userId = decoded.id
+      // req.body.userId = decoded.id
       next()
     }
   })

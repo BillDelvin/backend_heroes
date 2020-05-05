@@ -21,7 +21,7 @@ module.exports = {
       .then((response, err) => {
         console.log(response._id)
         if (err) {
-          next(err)
+          res.status(400).json({message: "Login Failed"})
         } else {
           if (response != null && bcrypt.compareSync(req.body.password, response.password)) {
             jwt.sign(
@@ -40,7 +40,8 @@ module.exports = {
         }
       })
       .catch((err) => {
-        throw err
+        res.status(400).json({message: "Login Failed"})
+
       })
   },
 }
